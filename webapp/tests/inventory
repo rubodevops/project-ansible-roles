@@ -1,0 +1,5 @@
+ [ec2]
+aws_server ansible_connection=ssh ansible_ssh_host=18.188.40.178 ansible_ssh_user=ubuntu ansible_ssh_private_key_file=/home/dev/Downloads/aws-demo777.pem
+
+
+

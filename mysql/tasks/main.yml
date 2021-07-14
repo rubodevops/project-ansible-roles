@@ -1,0 +1,38 @@
+---
+# tasks file for mysql
+- name: update cache option
+  apt:
+    update_cache: yes
+    force_apt_get: yes
+    cache_valid_time: 3600
+  become: true
+
+- name: install mysql-server
+  apt: 
+    name: mysql-server
+    state: present
+  become: true
+          
+
+# - name: 'Install pymysql module'
+#   pip:
+#     name: 'PyMySQL'
+#     state: present   
+#   become: true
+
+- name: Start mysql service
+  systemd: name=mysql state=started enabled=yes
+  become: true  
+
+
+
+- name: set root mysql password
+  mysql_user: 
+    name: root 
+    password: rootpass
+    login_user: root
+    login_password: rootpass
+    check_implicit_admin: yes
+    priv: "*.*:ALL,GRANT"
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+  become: true   

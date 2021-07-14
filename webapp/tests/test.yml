@@ -1,0 +1,88 @@
+---
+- hosts: ec2
+  remote_user: root
+  tasks:
+
+    - name: update cache option
+      apt:
+        update_cache: yes
+        force_apt_get: yes
+        cache_valid_time: 3600
+      become: true
+
+      
+    # - name: web-application package
+    #   copy:
+    #     src: ../files/web-application/{{item}}
+    #     dest: /home/ubuntu 
+    #   with_items:
+    #     ['angular.json','browserslist','e2e','karma.conf.js','package.json','package-lock.json','README.md','tslint-to-eslint-config.log','tslint.json','tsconfig.spec.json','tsconfig.json','tsconfig.app.json','src']   
+    #   become: true    
+      
+    - name: Install curl
+      apt:
+        name: curl
+        state: present
+      become: true 
+
+
+    
+      
+
+
+
+
+
+    - name: nvm
+      shell: >
+        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+      args:
+        creates: "home/ubuntu/.nvm/nvm.sh"
+
+
+
+# {{ ansible_env.HOME }}
+    
+    
+    
+    - name: Install node and set version
+      become: yes
+      become_user: root
+      shell: "source /home/ubuntu/.nvm/ && nvm install v12.14" 
+      args:
+        executable: bin/bash
+    
+    
+    
+    
+
+            
+
+    # - name: install node wanted version 
+    #   shell: "nvm install v12.14"
+    #   # args:
+    #     # chdir: "/home/ubuntu/.nvm"
+    #   become: true  
+      
+      
+    # - name: Install npm
+    #   apt:
+    #     name: npm
+    #     state: present
+    #   become: true  
+    
+    - name: Install Angular.js
+      npm:
+        name: "@angular/cli"  
+        global: yes
+        state: present 
+      become: true 
+
+    - name: build app 
+      shell: "ng build"
+      become: true
+    
+    
+    - name: run app 
+      shell: "ng serve"
+      become: true   
